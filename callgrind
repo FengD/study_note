@@ -1,0 +1,83 @@
+Callgrind
+
+--separate-thread=yes  对于每个线程单独进行分析
+
+valgrind --tool=callgrind --separate-threads=yes ./exproxy
+
+
+KCachegrind  图形显示结果
+在程序终止时将配置文件数据写出到文件。为了呈现数据和交互式控制分析，提供了两个命令行工具：
+callgrind_annotate
+此命令读入配置文件数据，并打印已排序的函数列表，可选择使用源注释。
+对于数据的图形可视化可以使用 KCachegrind
+callgrind_control
+使用此命令可以交互式地观察和控制当前在Callgrind控件下运行的程序的状态，而无需停止程序。
+
+三、命令行参数详解
+–callgrind-out-file=<file>
+将配置文件数据写入指定文件 file中，而不是默认输出文件 callgrind.out.<pid>。可以使用%p、%q格式说明符，参见–log-file；
+
+–dump-line=<no|yes> [default: yes]
+使用以源码行粒度执行事件计数，需要在gcc时加 -g选项；
+
+–dump-instr=<no|yes> [default: no]
+使用以指令粒度执行事件计数。结果只能在KCachegrind中显示。
+
+–compress-strings=<no|yes> [default: yes]
+用数字代替标识符（文件和函数名称）；
+
+–compress-pos=<no|yes> [default: yes]
+位置表示为绝对值还是相对值；
+
+–combine-dumps=<no|yes> [default: no]
+启用后，将结果输出到同一文件中。不建议启用；
+
+–dump-every-bb=<count> [default: 0, never]
+设置配置文件大小，超出后保存到下一个文件。
+
+–dump-before=<function>
+当进入到指定函数时，将信息保存到新的配置文件中；
+
+–zero-before=<function>
+进入指定函数时将所有性能参数归零；
+
+–dump-after=<function>
+当离开指定函数时，将信息保存到新的配置文件中；
+
+–instr-atstart=<yes|no> [default: yes]
+指定是否希望Callgrind从程序开头开始模拟和分析。
+
+–collect-atstart=<yes|no> [default: yes]
+指定是否在配置文件运行开始时启用事件收集。
+
+–toggle-collect=
+在进入/退出指定函数时切换集合。
+
+–collect-jumps=<no|yes> [default: no]
+这指定是否应该收集条件跳转的信息。
+
+–collect-systime=<no|yes> [default: no]
+这指定是否应收集系统调用时间的信息。
+
+–collect-bus=<no|yes> [default: no]
+这指定是否应该收集执行的全局总线事件的数量。
+
+–separate-threads=<no|yes> [default: no]
+是否为每个线程单独生成配置文件。如果是，则文件名将附加“-threadID”。
+
+–separate-callers=<callers> [default: 0]
+
+–separate-callers<number>=<function>
+
+–separate-recs=<level> [default: 2]
+
+–separate-recs<number>=<function>
+
+–skip-plt=<no|yes> [default: yes]
+忽略对PLT部分的调用。
+
+–skip-direct-rec=<no|yes> [default: yes]
+忽略直接递归。
+
+–fn-skip=<function>
+忽略对给定函数的调用。例如，如果有一个名为A> B> C的调用链，并指定要忽略的函数B，则只能看到A> C.
